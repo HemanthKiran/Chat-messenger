@@ -26,7 +26,7 @@ const Login = () => {
                     <FacebookOutlined /> Sign In with Facebook
                 </div>
             </div>
-        </div>
+        </div >
     )
 
 }

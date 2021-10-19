@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ChatEngine } from 'react-chat-engine';
 import { auth } from '../components/firebase';
@@ -28,13 +28,13 @@ const Chats = () => {
 
     useEffect(() => {
         if (!user) {
-            history.post('/');
+            history.push('/');
 
             return;
         }
         axios.get('https://api.chatengine.io/users/me/', {
             headers: {
-                "project-ID": "3f24da98-be94-4e47-8fa3-24141d153733",
+                "Project-ID": process.env.REACT_APP_CHAT_ENGINE_ID,
                 "user-name": user.email,
                 "user-secret": user.uid,
 
@@ -47,7 +47,7 @@ const Chats = () => {
                 let formdata = new FormData();
                 formdata.append('email', user.email);
                 formdata.append('username', user.email);
-                formdata.append('secret'.user.Uid);
+                formdata.append('secret', user.uid);
 
                 getFile(user.photoURL)
                     .then((avatar) => {
@@ -56,7 +56,7 @@ const Chats = () => {
                         axios.post('https://api.chatengine.io/users/',
                             formdata,
                             {
-                                headers: { "private-Key": "65b43d22-d02e-4b7d-956e-cca0bed1749b" }
+                                headers: { "private-Key": process.env.REACT_APP_CHAT_ENGINE_KEY }
                             }
                         )
                             .then(() => setLoading(false))
@@ -79,9 +79,9 @@ const Chats = () => {
             </div>
             <ChatEngine
                 height="calc(100vh - 66px)"
-                projectID="3f24da98-be94-4e47-8fa3-24141d153733"
+                projectID={process.env.REACT_APP_CHAT_ENGINE_ID}
                 userName={user.email}
-                userSecret={user.Uid}
+                userSecret={user.uid}
 
             />
         </div>
